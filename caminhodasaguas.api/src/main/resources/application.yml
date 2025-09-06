@@ -1,0 +1,40 @@
+spring:
+    application:
+        name: caminhodasaguas.api
+    datasource:
+        password: senha123
+        username: shintani
+        url: jdbc:postgresql://144.22.251.50:5432/caminho_db
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+              dialect: org.hibernate.dialect.PostgreSQLDialect
+    mail:
+      smtp: smtp.gmail.com
+      port: 587
+      username: rodrigofroesport@gmail.com
+      password: ttsb agjy rppr uggv
+      email: noreply@gmail.com
+      expiration: 10
+    minio:
+      url: http://localhost:9000
+      access-key: minioadmin
+      secret-key: minioadmin123
+      bucket: caminhos
+    servlet:
+      multipart:
+        max-file-size: 10MB
+        max-request-size: 70MB
+    image:
+      max-size: 6
+
+logging:
+  level:
+    br.com.shintaniconfeccoes.api: DEBUG
+jwt:
+  secret: 1234567890
+  expiration_client: 7
+  expiration_admin: 1
