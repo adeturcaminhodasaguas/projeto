@@ -20,7 +20,7 @@ spring:
       email: noreply@gmail.com
       expiration: 10
     minio:
-      url: http://localhost:9000
+      url: http://144.22.251.50:9000
       access-key: minioadmin
       secret-key: minioadmin123
       bucket: caminhos

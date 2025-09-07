@@ -41,7 +41,7 @@ public class UserService {
     }
 
     public ResponseDTO<List<UserDTO>> findAll(){
-        List<UserDomain> users = userRepository.findAllByDeletedAtIsNull();
+        List<UserDomain> users = userRepository.findAll();
         logger.info("Listing all users with size of: {}", users.size());
 
         return UserMapper.toListDTO(users);
@@ -103,7 +103,7 @@ public class UserService {
 
     private UserDomain existUser(UUID id){
         logger.info("Find if exist user with id: {}", id);
-        return userRepository.findByIdAndDeletedAtIsNull(id)
+        return userRepository.findById(id)
                 .orElseThrow(() -> {
                     logger.info("User not found with id: {}", id);
                     return new UserNotFoundException("Usuário não encontrado.");

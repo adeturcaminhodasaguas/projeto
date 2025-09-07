@@ -1,6 +1,5 @@
 package br.com.caminhodasaguas.api.domains;
 
-import br.com.caminhodasaguas.api.DTO.request.MunicipalityEditRequestDTO;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

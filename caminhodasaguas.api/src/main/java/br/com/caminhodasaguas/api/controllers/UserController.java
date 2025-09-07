@@ -2,13 +2,11 @@ package br.com.caminhodasaguas.api.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
 import br.com.caminhodasaguas.api.DTO.UserDTO;
-import br.com.caminhodasaguas.api.domains.enums.UserEnum;
 import br.com.caminhodasaguas.api.services.UserService;
 
 import java.util.List;
