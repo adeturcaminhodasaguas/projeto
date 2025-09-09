@@ -1,20 +1,11 @@
 package br.com.caminhodasaguas.api.services;
 
-import br.com.caminhodasaguas.api.DTO.request.MunicipalityEditRequestDTO;
-import br.com.caminhodasaguas.api.DTO.request.MunicipalityRequestDTO;
-import br.com.caminhodasaguas.api.DTO.ResponseDTO;
-import br.com.caminhodasaguas.api.DTO.customs.MunicipalityCustomDTO;
-import br.com.caminhodasaguas.api.configs.exceptions.MaxSizeInvalidException;
-import br.com.caminhodasaguas.api.configs.exceptions.MunicipalityAlreadyRegisteredException;
-import br.com.caminhodasaguas.api.configs.exceptions.PhoneInvalidException;
-import br.com.caminhodasaguas.api.domains.MunicipalityDomain;
-import br.com.caminhodasaguas.api.domains.items.ItemDomainMunicipality;
-import br.com.caminhodasaguas.api.mappers.MunicipalityMapper;
-import br.com.caminhodasaguas.api.repositories.MunicipalityRepository;
-import br.com.caminhodasaguas.api.utils.FormatDescription;
-import br.com.caminhodasaguas.api.utils.OnlyDigitsUtils;
-import br.com.caminhodasaguas.api.utils.ValidationValueUtils;
-import jakarta.transaction.Transactional;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +13,33 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import br.com.caminhodasaguas.api.DTO.ResponseDTO;
+import br.com.caminhodasaguas.api.DTO.customs.MunicipalityCustomDTO;
+import br.com.caminhodasaguas.api.DTO.request.MunicipalityEditRequestDTO;
+import br.com.caminhodasaguas.api.DTO.request.MunicipalityRequestDTO;
+import br.com.caminhodasaguas.api.configs.exceptions.MaxSizeInvalidException;
+import br.com.caminhodasaguas.api.configs.exceptions.MunicipalityAlreadyRegisteredException;
+import br.com.caminhodasaguas.api.configs.exceptions.PhoneInvalidException;
+import br.com.caminhodasaguas.api.domains.ExperienceTourismDomain;
+import br.com.caminhodasaguas.api.domains.MunicipalityDomain;
+import br.com.caminhodasaguas.api.domains.items.ItemDomainMunicipality;
+import br.com.caminhodasaguas.api.mappers.MunicipalityMapper;
+import br.com.caminhodasaguas.api.repositories.ExperienceTourismRepository;
+import br.com.caminhodasaguas.api.utils.FormatDescription;
+import br.com.caminhodasaguas.api.utils.OnlyDigitsUtils;
+import br.com.caminhodasaguas.api.utils.ValidationValueUtils;
+import jakarta.transaction.Transactional;
 
 @Service
-public class MunicipalityService {
+public class ExperienceTourismService {
 
-    Logger logger = LoggerFactory.getLogger(MunicipalityService.class);
+    Logger logger = LoggerFactory.getLogger(ExperienceTourismService.class);
+
+    @Autowired
+    private ExperienceTourismRepository experienceTourismRepository;
 
     @Autowired
     private MinioService minioService;
-
-    @Autowired
-    private MunicipalityRepository municipalityRepository;
 
     @Value("${spring.minio.bucket}")
     private String bucketName;
@@ -43,8 +47,8 @@ public class MunicipalityService {
     @Value("${spring.image.max-size}")
     private Integer MAX_SIZE;
 
-    public ResponseDTO<List<MunicipalityCustomDTO>> findAll() {
-        List<MunicipalityDomain> domains = municipalityRepository.findAll();
+     public ResponseDTO<List<MunicipalityCustomDTO>> findAll() {
+        List<ExperienceTourismDomain> domains = experienceTourismRepository.findAll();
         return new ResponseDTO<List<MunicipalityCustomDTO>>(MunicipalityMapper.toDTOList(domains));
     }
 

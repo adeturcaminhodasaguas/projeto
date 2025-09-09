@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import br.com.caminhodasaguas.api.domains.items.ItemDomainMunicipality;
+
 @Entity
 @Table(name = "municipalities")
 public class MunicipalityDomain extends BaseDomain {
@@ -30,7 +32,7 @@ public class MunicipalityDomain extends BaseDomain {
     private String url;
 
     @OneToMany(mappedBy = "municipalityDomain", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemDomain> highlights = new ArrayList<>();
+    private List<ItemDomainMunicipality> highlights = new ArrayList<>();
 
     public MunicipalityDomain() {
     }
@@ -57,7 +59,7 @@ public class MunicipalityDomain extends BaseDomain {
     }
 
     public void addHighlights(String img) {
-        ItemDomain item = ItemDomain.draft(img);
+        ItemDomainMunicipality item = ItemDomainMunicipality.draft(img);
         item.setMunicipalityDomain(this);
         highlights.add(item);
     }
@@ -86,11 +88,11 @@ public class MunicipalityDomain extends BaseDomain {
         this.url = url;
     }
 
-    public List<ItemDomain> getHighlights() {
+    public List<ItemDomainMunicipality> getHighlights() {
         return highlights;
     }
 
-    public void setHighlights(List<ItemDomain> highlights) {
+    public void setHighlights(List<ItemDomainMunicipality> highlights) {
         this.highlights = highlights;
     }
 
