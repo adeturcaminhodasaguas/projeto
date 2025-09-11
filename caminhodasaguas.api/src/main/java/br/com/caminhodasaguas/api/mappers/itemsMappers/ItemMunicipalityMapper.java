@@ -1,11 +1,11 @@
-package br.com.caminhodasaguas.api.mappers;
+package br.com.caminhodasaguas.api.mappers.itemsMappers;
 
 import br.com.caminhodasaguas.api.DTO.customs.ItemCustomDTO;
 import br.com.caminhodasaguas.api.domains.items.ItemDomainMunicipality;
 
 import java.util.List;
 
-public class ItemMapper {
+public class ItemMunicipalityMapper {
 
     public static ItemCustomDTO toDto(ItemDomainMunicipality itemDomain){
         return new ItemCustomDTO(
@@ -16,7 +16,7 @@ public class ItemMapper {
 
     public static List<ItemCustomDTO> toDtoList(List<ItemDomainMunicipality> itemDomains){
         return itemDomains.stream()
-                .map(ItemMapper::toDto)
+                .map(ItemMunicipalityMapper::toDto)
                 .toList();
     }
 }

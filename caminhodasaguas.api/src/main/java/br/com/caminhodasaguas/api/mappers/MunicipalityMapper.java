@@ -2,6 +2,7 @@ package br.com.caminhodasaguas.api.mappers;
 
 import br.com.caminhodasaguas.api.DTO.customs.MunicipalityCustomDTO;
 import br.com.caminhodasaguas.api.domains.MunicipalityDomain;
+import br.com.caminhodasaguas.api.mappers.itemsMappers.ItemMunicipalityMapper;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class MunicipalityMapper {
                 municipalityDomain.getPhone(),
                 municipalityDomain.getInstagram(),
                 municipalityDomain.getSite(),
-                ItemMapper.toDtoList(municipalityDomain.getHighlights())
+                ItemMunicipalityMapper.toDtoList(municipalityDomain.getHighlights())
         );
     }
 

@@ -5,7 +5,7 @@ import br.com.caminhodasaguas.api.domains.MunicipalityDomain;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "items")
+@Table(name = "items_municipality")
 public class ItemDomainMunicipality extends BaseDomain {
 
     @Column(nullable = false)

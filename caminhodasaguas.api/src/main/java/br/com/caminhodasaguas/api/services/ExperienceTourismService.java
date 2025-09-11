@@ -3,6 +3,7 @@ package br.com.caminhodasaguas.api.services;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -14,16 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
-import br.com.caminhodasaguas.api.DTO.customs.MunicipalityCustomDTO;
-import br.com.caminhodasaguas.api.DTO.request.MunicipalityEditRequestDTO;
-import br.com.caminhodasaguas.api.DTO.request.MunicipalityRequestDTO;
+import br.com.caminhodasaguas.api.DTO.customs.ExperienceTourismCustomDTO;
+import br.com.caminhodasaguas.api.DTO.request.ExperienceTourismEditRequestDTO;
+import br.com.caminhodasaguas.api.DTO.request.ExperienceTourismRequestDTO;
+import br.com.caminhodasaguas.api.configs.exceptions.ExperienceTourismAlreadyRegisteredException;
+import br.com.caminhodasaguas.api.configs.exceptions.ExperienceTourismNotFoundException;
 import br.com.caminhodasaguas.api.configs.exceptions.MaxSizeInvalidException;
-import br.com.caminhodasaguas.api.configs.exceptions.MunicipalityAlreadyRegisteredException;
 import br.com.caminhodasaguas.api.configs.exceptions.PhoneInvalidException;
 import br.com.caminhodasaguas.api.domains.ExperienceTourismDomain;
-import br.com.caminhodasaguas.api.domains.MunicipalityDomain;
-import br.com.caminhodasaguas.api.domains.items.ItemDomainMunicipality;
-import br.com.caminhodasaguas.api.mappers.MunicipalityMapper;
+import br.com.caminhodasaguas.api.domains.items.ItemDomainExperienceTourism;
+import br.com.caminhodasaguas.api.mappers.ExperienceTourismMapper;
 import br.com.caminhodasaguas.api.repositories.ExperienceTourismRepository;
 import br.com.caminhodasaguas.api.utils.FormatDescription;
 import br.com.caminhodasaguas.api.utils.OnlyDigitsUtils;
@@ -47,90 +48,90 @@ public class ExperienceTourismService {
     @Value("${spring.image.max-size}")
     private Integer MAX_SIZE;
 
-     public ResponseDTO<List<MunicipalityCustomDTO>> findAll() {
+    public ResponseDTO<List<ExperienceTourismCustomDTO>> findAll() {
         List<ExperienceTourismDomain> domains = experienceTourismRepository.findAll();
-        return new ResponseDTO<List<MunicipalityCustomDTO>>(MunicipalityMapper.toDTOList(domains));
+        return new ResponseDTO<List<ExperienceTourismCustomDTO>>(ExperienceTourismMapper.toDTOList(domains));
     }
 
-    public ResponseDTO<MunicipalityCustomDTO> findById(UUID id){
-        MunicipalityDomain domain = existMunicipality(id);
-        return new ResponseDTO<MunicipalityCustomDTO>(MunicipalityMapper.toDTO(domain));
+    public ResponseDTO<ExperienceTourismCustomDTO> findById(UUID id) {
+        ExperienceTourismDomain domain = existTourism(id);
+        return new ResponseDTO<ExperienceTourismCustomDTO>(ExperienceTourismMapper.toDTO(domain));
     }
 
-    public void delete(UUID id){
-        MunicipalityDomain domain = existMunicipality(id);
-        municipalityRepository.delete(domain);
+    public void delete(UUID id) {
+        ExperienceTourismDomain domain = existTourism(id);
+        experienceTourismRepository.delete(domain);
     }
 
     @Transactional
-    public ResponseDTO<MunicipalityCustomDTO> update(UUID id, MunicipalityEditRequestDTO municipalityEditRequestDTO) throws IOException {
-        MunicipalityDomain municipality = existMunicipality(id);
-        validation(municipalityEditRequestDTO.phone(), municipalityEditRequestDTO.highlights());
-        String url = OnlyDigitsUtils.normalize(municipalityEditRequestDTO.name());
+    public ResponseDTO<ExperienceTourismCustomDTO> update(UUID id,
+            ExperienceTourismEditRequestDTO experienceTourismEditRequestDTO) throws IOException {
+        ExperienceTourismDomain experienceTourism = existTourism(id);
+        validation(experienceTourismEditRequestDTO.phone(), experienceTourismEditRequestDTO.highlights());
+        String url = OnlyDigitsUtils.normalize(experienceTourismEditRequestDTO.name());
 
-        MunicipalityDomain update = MunicipalityDomain.edit(
-                municipality,
-                municipalityEditRequestDTO.name(),
-                FormatDescription.format(municipalityEditRequestDTO.description()),
-                municipalityEditRequestDTO.phone(),
-                municipalityEditRequestDTO.instagram(),
-                municipalityEditRequestDTO.site(),
-                url
-        );
+        ExperienceTourismDomain update = ExperienceTourismDomain.edit(
+                experienceTourism,
+                experienceTourismEditRequestDTO.name(),
+                FormatDescription.format(experienceTourismEditRequestDTO.description()),
+                experienceTourismEditRequestDTO.phone(),
+                experienceTourismEditRequestDTO.instagram(),
+                experienceTourismEditRequestDTO.site(),
+                url);
 
-        if (municipalityEditRequestDTO.img() != null && !municipalityEditRequestDTO.img().isEmpty()) {
-            String urlCapa = upload(bucketName, municipalityEditRequestDTO.img());
+        if (experienceTourismEditRequestDTO.img() != null && !experienceTourismEditRequestDTO.img().isEmpty()) {
+            String urlCapa = upload(bucketName, experienceTourismEditRequestDTO.img());
             update.setImg(urlCapa);
         }
 
-        Set<UUID> uuids = municipalityEditRequestDTO.highlights_exists() == null
-                ? update.getHighlights().stream().map(ItemDomainMunicipality::getId).collect(Collectors.toSet())
-                : new HashSet<>(municipalityEditRequestDTO.highlights_exists());
+        Set<UUID> uuids = experienceTourismEditRequestDTO.highlights_exists() == null
+                ? update.getHighlights().stream().map(ItemDomainExperienceTourism::getId).collect(Collectors.toSet())
+                : new HashSet<>(experienceTourismEditRequestDTO.highlights_exists());
 
         update.getHighlights().removeIf(item -> !uuids.contains(item.getId()));
 
-        if (municipalityEditRequestDTO.highlights() != null) {
-            for (MultipartFile f : municipalityEditRequestDTO.highlights()) {
+        if (experienceTourismEditRequestDTO.highlights() != null) {
+            for (MultipartFile f : experienceTourismEditRequestDTO.highlights()) {
                 String urlHighlights = upload(bucketName, f);
                 update.addHighlights(urlHighlights);
             }
         }
 
-        MunicipalityDomain save = municipalityRepository.save(municipality);
-        return new ResponseDTO<MunicipalityCustomDTO>(MunicipalityMapper.toDTO(save));
+        ExperienceTourismDomain save = experienceTourismRepository.save(update);
+        return new ResponseDTO<ExperienceTourismCustomDTO>(ExperienceTourismMapper.toDTO(save));
     }
 
     @Transactional
-    public ResponseDTO<MunicipalityCustomDTO> save(MunicipalityRequestDTO municipalityRequestDTO) throws IOException {
-        validation(municipalityRequestDTO.phone(), municipalityRequestDTO.highlights());
-        String url = OnlyDigitsUtils.normalize(municipalityRequestDTO.name());
+    public ResponseDTO<ExperienceTourismCustomDTO> save(ExperienceTourismRequestDTO experienceTourismRequestDTO)
+            throws IOException {
+        validation(experienceTourismRequestDTO.phone(), experienceTourismRequestDTO.highlights());
+        String url = OnlyDigitsUtils.normalize(experienceTourismRequestDTO.name());
 
-        existMunicipalityUrl(url);
+        existExperienceTourismUrl(url);
 
-        MunicipalityDomain municipality = MunicipalityDomain.draft(
-                municipalityRequestDTO.name(),
-                FormatDescription.format(municipalityRequestDTO.description()),
-                municipalityRequestDTO.phone(),
-                municipalityRequestDTO.instagram(),
-                municipalityRequestDTO.site(),
-                OnlyDigitsUtils.normalize(url)
-        );
+        ExperienceTourismDomain experienceTourism = ExperienceTourismDomain.draft(
+                experienceTourismRequestDTO.name(),
+                FormatDescription.format(experienceTourismRequestDTO.description()),
+                experienceTourismRequestDTO.phone(),
+                experienceTourismRequestDTO.instagram(),
+                experienceTourismRequestDTO.site(),
+                url);
 
-        String img = upload(bucketName, municipalityRequestDTO.img());
-        municipality.setImg(img);
+        String img = upload(bucketName, experienceTourismRequestDTO.img());
+        experienceTourism.setImg(img);
 
-        municipalityRequestDTO.highlights()
+        experienceTourismRequestDTO.highlights()
                 .forEach(multipartFile -> {
                     try {
                         String highlight = upload(bucketName, multipartFile);
-                        municipality.addHighlights(highlight);
+                        experienceTourism.addHighlights(highlight);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 });
 
-        MunicipalityDomain save = municipalityRepository.save(municipality);
-        return new ResponseDTO<MunicipalityCustomDTO>(MunicipalityMapper.toDTO(save));
+        ExperienceTourismDomain save = experienceTourismRepository.save(experienceTourism);
+        return new ResponseDTO<ExperienceTourismCustomDTO>(ExperienceTourismMapper.toDTO(save));
     }
 
     private void validation(String phone, List<MultipartFile> files) {
@@ -139,7 +140,7 @@ public class ExperienceTourismService {
             throw new PhoneInvalidException("Telefone inválido.");
         }
 
-        if(!ValidationValueUtils.isLengthValid(files, MAX_SIZE)) {
+        if (!ValidationValueUtils.isLengthValid(files, MAX_SIZE)) {
             logger.info("File is invalid with max size: {}", files.size());
             throw new MaxSizeInvalidException("Tamanho maximo 6 fotos.");
         }
@@ -154,19 +155,20 @@ public class ExperienceTourismService {
                 "image/webp");
     }
 
-    private MunicipalityDomain existMunicipality(UUID id) {
-        return municipalityRepository.findById(id)
+    private ExperienceTourismDomain existTourism(UUID id) {
+        return experienceTourismRepository.findById(id)
                 .orElseThrow(() -> {
-                    logger.info("Municipio não encontrado.");
-                    throw new MunicipalityAlreadyRegisteredException("Municipio não encontrado.");
+                    logger.info("Experiência de turismo não encontrada.");
+                    throw new ExperienceTourismNotFoundException("Experiência de turismo não encontrada.");
                 });
     }
 
-    private void existMunicipalityUrl(String url) {
-        municipalityRepository.findByUrl(url)
-                .ifPresent(municipalityDomain -> {
-                    logger.info("Municipio já cadastrado com o nome: {}", municipalityDomain.getName());
-                    throw new MunicipalityAlreadyRegisteredException("Municipio já cadastrado.");
+    private void existExperienceTourismUrl(String url) {
+        experienceTourismRepository.findByUrl(url)
+                .ifPresent(experienceTourismDomain -> {
+                    logger.info("Experiência de turismo já cadastrada com o nome: {}",
+                            experienceTourismDomain.getName());
+                    throw new ExperienceTourismAlreadyRegisteredException("Experiência de turismo já cadastrada.");
                 });
     }
 

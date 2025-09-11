@@ -1,5 +1,6 @@
 package br.com.caminhodasaguas.api.configs.exceptions.handler;
 
+import br.com.caminhodasaguas.api.configs.exceptions.ExperienceTourismAlreadyRegisteredException;
 import br.com.caminhodasaguas.api.configs.exceptions.MunicipalityAlreadyRegisteredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,6 +86,20 @@ public class HandlerException {
     @ExceptionHandler(EmailNotFoundException.class)
     public ResponseEntity<ExceptionDTO<String>> EmailNotFoundException(Exception ex) {
         HttpStatus status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(
+                new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
+    }
+
+    @ExceptionHandler(ExperienceTourismNotFoundException.class)
+    public ResponseEntity<ExceptionDTO<String>> ExperienceTourismNotFoundException(Exception ex) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(
+                new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
+    }
+
+    @ExceptionHandler(ExperienceTourismAlreadyRegisteredException.class)
+    public ResponseEntity<ExceptionDTO<String>> ExperienceTourismAlreadyRegisteredException(Exception ex) {
+        HttpStatus status = HttpStatus.CONFLICT;
         return ResponseEntity.status(status).body(
                 new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
     }

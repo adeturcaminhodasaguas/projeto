@@ -5,7 +5,7 @@ import br.com.caminhodasaguas.api.domains.ExperienceTourismDomain;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "items")
+@Table(name = "items_experience_tourism")
 public class ItemDomainExperienceTourism extends BaseDomain {
 
     @Column(nullable = false)
