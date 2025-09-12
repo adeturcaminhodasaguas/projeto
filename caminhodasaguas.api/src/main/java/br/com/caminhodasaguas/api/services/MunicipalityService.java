@@ -7,8 +7,8 @@ import br.com.caminhodasaguas.api.DTO.customs.MunicipalityCustomDTO;
 import br.com.caminhodasaguas.api.configs.exceptions.MaxSizeInvalidException;
 import br.com.caminhodasaguas.api.configs.exceptions.MunicipalityAlreadyRegisteredException;
 import br.com.caminhodasaguas.api.configs.exceptions.PhoneInvalidException;
-import br.com.caminhodasaguas.api.domains.ItemDomain;
 import br.com.caminhodasaguas.api.domains.MunicipalityDomain;
+import br.com.caminhodasaguas.api.domains.items.ItemDomainMunicipality;
 import br.com.caminhodasaguas.api.mappers.MunicipalityMapper;
 import br.com.caminhodasaguas.api.repositories.MunicipalityRepository;
 import br.com.caminhodasaguas.api.utils.FormatDescription;
@@ -80,7 +80,7 @@ public class MunicipalityService {
         }
 
         Set<UUID> uuids = municipalityEditRequestDTO.highlights_exists() == null
-                ? update.getHighlights().stream().map(ItemDomain::getId).collect(Collectors.toSet())
+                ? update.getHighlights().stream().map(ItemDomainMunicipality::getId).collect(Collectors.toSet())
                 : new HashSet<>(municipalityEditRequestDTO.highlights_exists());
 
         update.getHighlights().removeIf(item -> !uuids.contains(item.getId()));

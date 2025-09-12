@@ -1,10 +1,12 @@
-package br.com.caminhodasaguas.api.domains;
+package br.com.caminhodasaguas.api.domains.items;
 
+import br.com.caminhodasaguas.api.domains.BaseDomain;
+import br.com.caminhodasaguas.api.domains.MunicipalityDomain;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "items")
-public class ItemDomain extends BaseDomain {
+@Table(name = "items_municipality")
+public class ItemDomainMunicipality extends BaseDomain {
 
     @Column(nullable = false)
     private String img;
@@ -12,10 +14,10 @@ public class ItemDomain extends BaseDomain {
     @ManyToOne(optional = false)
     private MunicipalityDomain municipalityDomain;
 
-    public ItemDomain() {}
+    public ItemDomainMunicipality() {}
 
-    public static ItemDomain draft(String img){
-        ItemDomain item = new ItemDomain();
+    public static ItemDomainMunicipality draft(String img){
+        ItemDomainMunicipality item = new ItemDomainMunicipality();
         item.setImg(img);
         return item;
     }
