@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import br.com.caminhodasaguas.api.domains.items.ItemDomainExperienceTourism;
+import br.com.caminhodasaguas.api.domains.items.ItemDomainFlavorsCulture;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,9 +12,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "experience_tourism")
-public class ExperienceTourismDomain extends BaseDomain {
-     @Column(nullable = false)
+@Table(name = "flavors_culture")
+public class FlavorsCultureDomain extends BaseDomain {
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -30,43 +30,42 @@ public class ExperienceTourismDomain extends BaseDomain {
     @Column(nullable = false)
     private String url;
 
-    @OneToMany(mappedBy = "experienceTourismDomain", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemDomainExperienceTourism> highlights = new ArrayList<>();
+    @OneToMany(mappedBy = "flavorsCultureDomain", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemDomainFlavorsCulture> highlights = new ArrayList<>();
 
-    public ExperienceTourismDomain() {
+    public FlavorsCultureDomain() {}
+
+    public static FlavorsCultureDomain draft(String name, String description, String phone, String instagram, String site, String url) {
+        FlavorsCultureDomain flavors = new FlavorsCultureDomain();
+        flavors.setName(name);
+        flavors.setDescription(description);
+        flavors.setPhone(phone);
+        flavors.setInstagram(instagram);
+        flavors.setSite(site);
+        flavors.setUrl(url);
+        return flavors;
     }
 
-    public static ExperienceTourismDomain draft(String name, String description, String phone, String instagram, String site, String url) {
-        ExperienceTourismDomain experience = new ExperienceTourismDomain();
-        experience.setName(name);
-        experience.setDescription(description);
-        experience.setPhone(phone);
-        experience.setInstagram(instagram);
-        experience.setSite(site);
-        experience.setUrl(url);
-        return experience;
-    }
-
-    public static ExperienceTourismDomain edit(ExperienceTourismDomain experienceTourism, String name, String description, String phone, String instagram, String site, String url){
-        experienceTourism.setName(name);
-        experienceTourism.setDescription(description);
-        experienceTourism.setPhone(phone);
-        experienceTourism.setInstagram(instagram);
-        experienceTourism.setSite(site);
-        experienceTourism.setUrl(url);
-        return experienceTourism;
+    public static FlavorsCultureDomain edit(FlavorsCultureDomain flavorsCultureDomain, String name, String description, String phone, String instagram, String site, String url){
+        flavorsCultureDomain.setName(name);
+        flavorsCultureDomain.setDescription(description);
+        flavorsCultureDomain.setPhone(phone);
+        flavorsCultureDomain.setInstagram(instagram);
+        flavorsCultureDomain.setSite(site);
+        flavorsCultureDomain.setUrl(url);
+        return  flavorsCultureDomain;
     }
 
     public void addHighlights(String img) {
-        ItemDomainExperienceTourism item = ItemDomainExperienceTourism.draft(img);
-        item.setExperienceTourismDomain(this);
+        ItemDomainFlavorsCulture item = ItemDomainFlavorsCulture.draft(img);
+        item.setFlavorsCultureDomain(this);
         highlights.add(item);
     }
 
     public void removeHighlights(UUID id) {
         highlights.removeIf(item -> {
             boolean match = item.getId().equals(id);
-            if (match) item.setExperienceTourismDomain(null);
+            if (match) item.setFlavorsCultureDomain(null);
             return match;
         });
     }
@@ -87,11 +86,11 @@ public class ExperienceTourismDomain extends BaseDomain {
         this.url = url;
     }
 
-    public List<ItemDomainExperienceTourism> getHighlights() {
+    public List<ItemDomainFlavorsCulture> getHighlights() {
         return highlights;
     }
 
-    public void setHighlights(List<ItemDomainExperienceTourism> highlights) {
+    public void setHighlights(List<ItemDomainFlavorsCulture> highlights) {
         this.highlights = highlights;
     }
 

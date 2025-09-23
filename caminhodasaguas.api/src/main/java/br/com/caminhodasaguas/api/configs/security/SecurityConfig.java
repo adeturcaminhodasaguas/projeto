@@ -30,8 +30,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/auth/register/admin").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/auth/logout").hasAnyRole("ADMIN", "CLIENT")
-                        .requestMatchers(HttpMethod.POST, "/auth/me").hasAnyRole("ADMIN", "CLIENT")
+                        .requestMatchers(HttpMethod.POST, "/auth/logout").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/auth/me").hasAnyRole("ADMIN")
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .anyRequest().permitAll())
                 .addFilterBefore(jwtFilterConfig, UsernamePasswordAuthenticationFilter.class)

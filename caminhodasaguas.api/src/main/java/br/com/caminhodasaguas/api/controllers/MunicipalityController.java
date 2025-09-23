@@ -1,9 +1,7 @@
 package br.com.caminhodasaguas.api.controllers;
 
-import br.com.caminhodasaguas.api.DTO.request.MunicipalityEditRequestDTO;
-import br.com.caminhodasaguas.api.DTO.request.MunicipalityRequestDTO;
+import br.com.caminhodasaguas.api.DTO.MunicipalityDTO;
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
-import br.com.caminhodasaguas.api.DTO.customs.MunicipalityCustomDTO;
 import br.com.caminhodasaguas.api.services.MunicipalityService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +22,14 @@ public class MunicipalityController {
     private MunicipalityService municipalityService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO<MunicipalityCustomDTO>> save(@ModelAttribute @Valid MunicipalityRequestDTO municipalityRequestDTO) throws IOException {
-        ResponseDTO<MunicipalityCustomDTO> municipality = municipalityService.save(municipalityRequestDTO);
+    public ResponseEntity<ResponseDTO<MunicipalityDTO>> save(@ModelAttribute @Valid MunicipalityDTO municipalityDTO) throws IOException {
+        ResponseDTO<MunicipalityDTO> municipality = municipalityService.save(municipalityDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(municipality);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO<MunicipalityCustomDTO>> update(@PathVariable("id") UUID id, @ModelAttribute @Valid MunicipalityEditRequestDTO municipalityEditRequestDTO) throws IOException {
-        ResponseDTO<MunicipalityCustomDTO> municipality = municipalityService.update(id, municipalityEditRequestDTO);
+    public ResponseEntity<ResponseDTO<MunicipalityDTO>> update(@PathVariable("id") UUID id, @ModelAttribute @Valid MunicipalityDTO municipalityDTO) throws IOException {
+        ResponseDTO<MunicipalityDTO> municipality = municipalityService.update(id, municipalityDTO);
         return ResponseEntity.ok(municipality);
     }
 
@@ -42,14 +40,14 @@ public class MunicipalityController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDTO<List<MunicipalityCustomDTO>>> findAll(){
-        ResponseDTO<List<MunicipalityCustomDTO>> municipalities = municipalityService.findAll();
+    public ResponseEntity<ResponseDTO<List<MunicipalityDTO>>> findAll(){
+        ResponseDTO<List<MunicipalityDTO>> municipalities = municipalityService.findAll();
         return ResponseEntity.ok(municipalities);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO<MunicipalityCustomDTO>> findById(@PathVariable("id") UUID id){
-        ResponseDTO<MunicipalityCustomDTO> municipality = municipalityService.findById(id);
+    public ResponseEntity<ResponseDTO<MunicipalityDTO>> findById(@PathVariable("id") UUID id){
+        ResponseDTO<MunicipalityDTO> municipality = municipalityService.findById(id);
         return ResponseEntity.ok(municipality);
     }
 }

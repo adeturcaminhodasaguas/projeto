@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.http.MediaType;
 
+import br.com.caminhodasaguas.api.DTO.ExperienceTourismDTO;
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
-import br.com.caminhodasaguas.api.DTO.customs.ExperienceTourismCustomDTO;
-import br.com.caminhodasaguas.api.DTO.request.ExperienceTourismEditRequestDTO;
-import br.com.caminhodasaguas.api.DTO.request.ExperienceTourismRequestDTO;
 import br.com.caminhodasaguas.api.services.ExperienceTourismService;
 
 @RestController
@@ -32,29 +30,29 @@ public class ExperienceTourismController {
     private ExperienceTourismService experienceTourismService;
 
     @GetMapping
-    public ResponseEntity<ResponseDTO<List<ExperienceTourismCustomDTO>>> findAll() {
-        ResponseDTO<List<ExperienceTourismCustomDTO>> response = experienceTourismService.findAll();
+    public ResponseEntity<ResponseDTO<List<ExperienceTourismDTO>>> findAll() {
+        ResponseDTO<List<ExperienceTourismDTO>> response = experienceTourismService.findAll();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO<ExperienceTourismCustomDTO>> findById(@PathVariable UUID id) {
-        ResponseDTO<ExperienceTourismCustomDTO> response = experienceTourismService.findById(id);
+    public ResponseEntity<ResponseDTO<ExperienceTourismDTO>> findById(@PathVariable UUID id) {
+        ResponseDTO<ExperienceTourismDTO> response = experienceTourismService.findById(id);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO<ExperienceTourismCustomDTO>> save(
-            @ModelAttribute ExperienceTourismRequestDTO experienceTourismRequestDTO) throws IOException {
-        ResponseDTO<ExperienceTourismCustomDTO> response = experienceTourismService.save(experienceTourismRequestDTO);
+    public ResponseEntity<ResponseDTO<ExperienceTourismDTO>> save(
+            @ModelAttribute ExperienceTourismDTO experienceTourismRequestDTO) throws IOException {
+        ResponseDTO<ExperienceTourismDTO> response = experienceTourismService.save(experienceTourismRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping(path = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO<ExperienceTourismCustomDTO>> update(
+    public ResponseEntity<ResponseDTO<ExperienceTourismDTO>> update(
             @PathVariable("id") UUID id,
-            @ModelAttribute ExperienceTourismEditRequestDTO experienceTourismEditRequestDTO) throws IOException {
-        ResponseDTO<ExperienceTourismCustomDTO> response = experienceTourismService.update(id,
+            @ModelAttribute ExperienceTourismDTO experienceTourismEditRequestDTO) throws IOException {
+        ResponseDTO<ExperienceTourismDTO> response = experienceTourismService.update(id,
                 experienceTourismEditRequestDTO);
         return ResponseEntity.ok(response);
     }

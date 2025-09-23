@@ -1,0 +1,12 @@
+package br.com.caminhodasaguas.api.configs.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class TestimonialsNotFoundException extends RuntimeException {
+    public TestimonialsNotFoundException(String message) {
+        super(message);
+    }
+
+}
