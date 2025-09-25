@@ -168,6 +168,20 @@ public class HandlerException {
                 new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
     }
 
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ExceptionDTO<String>> EventNotFoundException(Exception ex) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(
+                new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
+    }
+
+    @ExceptionHandler(EventAlreadyRegisteredException.class)
+    public ResponseEntity<ExceptionDTO<String>> EventAlreadyRegisteredException(Exception ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(
+                new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
+    }
+
     @ExceptionHandler(TokenInvalidException.class)
     public ResponseEntity<ExceptionDTO<String>> TokenInvalidException(Exception ex) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;

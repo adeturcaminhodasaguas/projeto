@@ -1,0 +1,128 @@
+package br.com.caminhodasaguas.api.domains;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import br.com.caminhodasaguas.api.domains.items.ItemDomainEvent;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "events")
+public class EventDomain extends BaseDomain {
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String description;
+
+    @Column(nullable = false)
+    private String phone;
+
+    private String instagram;
+
+    private String site;
+
+    @Column(nullable = false)
+    private String url;
+
+    @OneToMany(mappedBy = "eventDomain", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemDomainEvent> highlights = new ArrayList<>();
+
+    public EventDomain() {}
+
+    public static EventDomain draft(String name, String description, String phone, String instagram, String site, String url) {
+        EventDomain event = new EventDomain();
+        event.setName(name);
+        event.setDescription(description);
+        event.setPhone(phone);
+        event.setInstagram(instagram);
+        event.setSite(site);
+        event.setUrl(url);
+        return event;
+    }
+
+    public static EventDomain edit(EventDomain eventDomain, String name, String description, String phone, String instagram, String site, String url){
+        eventDomain.setName(name);
+        eventDomain.setDescription(description);
+        eventDomain.setPhone(phone);
+        eventDomain.setInstagram(instagram);
+        eventDomain.setSite(site);
+        eventDomain.setUrl(url);
+        return  eventDomain;
+    }
+
+    public void addHighlights(String img) {
+        ItemDomainEvent item = ItemDomainEvent.draft(img);
+        item.setEventDomain(this);
+        highlights.add(item);
+    }
+
+    public void removeHighlights(UUID id) {
+        highlights.removeIf(item -> {
+            boolean match = item.getId().equals(id);
+            if (match) item.setEventDomain(null);
+            return match;
+        });
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public List<ItemDomainEvent> getHighlights() {
+        return highlights;
+    }
+
+    public void setHighlights(List<ItemDomainEvent> highlights) {
+        this.highlights = highlights;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getInstagram() {
+        return instagram;
+    }
+
+    public void setInstagram(String instagram) {
+        this.instagram = instagram;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
+}
