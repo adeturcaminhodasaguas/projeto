@@ -1,14 +1,11 @@
 package br.com.caminhodasaguas.api.domains;
 
-import org.hibernate.annotations.SQLDelete;
-
 import br.com.caminhodasaguas.api.domains.enums.UserEnum;
 import jakarta.persistence.*;
 
 
 @Entity
 @Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?")
 public class UserDomain extends BaseDomain {
 
     @Column(nullable = false)
