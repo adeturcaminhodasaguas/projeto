@@ -22,10 +22,11 @@ public class CookieService {
     }
 
     public void removeCookie(String name, HttpServletResponse response){
-        Cookie cookie = new Cookie(name, null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        Cookie cookie = new Cookie(name, "");
+    cookie.setHttpOnly(true);
+    cookie.setSecure(true);
+    cookie.setPath("/");
+    cookie.setMaxAge(0);
+    response.addCookie(cookie);
     }
 }
