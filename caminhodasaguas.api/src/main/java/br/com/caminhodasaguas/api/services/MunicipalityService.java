@@ -1,14 +1,11 @@
 package br.com.caminhodasaguas.api.services;
 
-import br.com.caminhodasaguas.api.DTO.request.MunicipalityEditRequestDTO;
-import br.com.caminhodasaguas.api.DTO.request.MunicipalityRequestDTO;
+import br.com.caminhodasaguas.api.DTO.MunicipalityDTO;
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
-import br.com.caminhodasaguas.api.DTO.customs.MunicipalityCustomDTO;
 import br.com.caminhodasaguas.api.configs.exceptions.MaxSizeInvalidException;
 import br.com.caminhodasaguas.api.configs.exceptions.MunicipalityAlreadyRegisteredException;
 import br.com.caminhodasaguas.api.configs.exceptions.PhoneInvalidException;
 import br.com.caminhodasaguas.api.domains.MunicipalityDomain;
-import br.com.caminhodasaguas.api.domains.items.ItemDomainMunicipality;
 import br.com.caminhodasaguas.api.mappers.MunicipalityMapper;
 import br.com.caminhodasaguas.api.repositories.MunicipalityRepository;
 import br.com.caminhodasaguas.api.utils.FormatDescription;
@@ -24,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class MunicipalityService {
@@ -43,14 +39,14 @@ public class MunicipalityService {
     @Value("${spring.image.max-size}")
     private Integer MAX_SIZE;
 
-    public ResponseDTO<List<MunicipalityCustomDTO>> findAll() {
+    public ResponseDTO<List<MunicipalityDTO>> findAll() {
         List<MunicipalityDomain> domains = municipalityRepository.findAll();
-        return new ResponseDTO<List<MunicipalityCustomDTO>>(MunicipalityMapper.toDTOList(domains));
+        return new ResponseDTO<List<MunicipalityDTO>>(MunicipalityMapper.toDTOList(domains));
     }
 
-    public ResponseDTO<MunicipalityCustomDTO> findById(UUID id){
+    public ResponseDTO<MunicipalityDTO> findById(UUID id){
         MunicipalityDomain domain = existMunicipality(id);
-        return new ResponseDTO<MunicipalityCustomDTO>(MunicipalityMapper.toDTO(domain));
+        return new ResponseDTO<MunicipalityDTO>(MunicipalityMapper.toDTO(domain));
     }
 
     public void delete(UUID id){
@@ -59,9 +55,9 @@ public class MunicipalityService {
     }
 
     @Transactional
-    public ResponseDTO<MunicipalityCustomDTO> update(UUID id, MunicipalityEditRequestDTO municipalityEditRequestDTO) throws IOException {
+    public ResponseDTO<MunicipalityDTO> update(UUID id, MunicipalityDTO municipalityEditRequestDTO) throws IOException {
         MunicipalityDomain municipality = existMunicipality(id);
-        validation(municipalityEditRequestDTO.phone(), municipalityEditRequestDTO.highlights());
+        validation(municipalityEditRequestDTO.phone(), municipalityEditRequestDTO.new_highlights());
         String url = OnlyDigitsUtils.normalize(municipalityEditRequestDTO.name());
 
         MunicipalityDomain update = MunicipalityDomain.edit(
@@ -74,48 +70,42 @@ public class MunicipalityService {
                 url
         );
 
-        if (municipalityEditRequestDTO.img() != null && !municipalityEditRequestDTO.img().isEmpty()) {
-            String urlCapa = upload(bucketName, municipalityEditRequestDTO.img());
-            update.setImg(urlCapa);
+        if(municipalityEditRequestDTO.deleted_highlights() != null) {
+            update.getHighlights().removeIf(item -> {
+                boolean match = municipalityEditRequestDTO.deleted_highlights().contains(item.getId());
+                if (match) item.setMunicipalityDomain(null);
+                return match;
+            });
         }
 
-        Set<UUID> uuids = municipalityEditRequestDTO.highlights_exists() == null
-                ? update.getHighlights().stream().map(ItemDomainMunicipality::getId).collect(Collectors.toSet())
-                : new HashSet<>(municipalityEditRequestDTO.highlights_exists());
-
-        update.getHighlights().removeIf(item -> !uuids.contains(item.getId()));
-
-        if (municipalityEditRequestDTO.highlights() != null) {
-            for (MultipartFile f : municipalityEditRequestDTO.highlights()) {
+        if (municipalityEditRequestDTO.new_highlights() != null) {
+            for (MultipartFile f : municipalityEditRequestDTO.new_highlights()) {
                 String urlHighlights = upload(bucketName, f);
                 update.addHighlights(urlHighlights);
             }
         }
 
         MunicipalityDomain save = municipalityRepository.save(municipality);
-        return new ResponseDTO<MunicipalityCustomDTO>(MunicipalityMapper.toDTO(save));
+        return new ResponseDTO<MunicipalityDTO>(MunicipalityMapper.toDTO(save));
     }
 
     @Transactional
-    public ResponseDTO<MunicipalityCustomDTO> save(MunicipalityRequestDTO municipalityRequestDTO) throws IOException {
-        validation(municipalityRequestDTO.phone(), municipalityRequestDTO.highlights());
-        String url = OnlyDigitsUtils.normalize(municipalityRequestDTO.name());
+    public ResponseDTO<MunicipalityDTO> save(MunicipalityDTO municipalityDTO) throws IOException {
+        validation(municipalityDTO.phone(), municipalityDTO.new_highlights());
+        String url = OnlyDigitsUtils.normalize(municipalityDTO.name());
 
         existMunicipalityUrl(url);
 
         MunicipalityDomain municipality = MunicipalityDomain.draft(
-                municipalityRequestDTO.name(),
-                FormatDescription.format(municipalityRequestDTO.description()),
-                municipalityRequestDTO.phone(),
-                municipalityRequestDTO.instagram(),
-                municipalityRequestDTO.site(),
+                municipalityDTO.name(),
+                FormatDescription.format(municipalityDTO.description()),
+                municipalityDTO.phone(),
+                municipalityDTO.instagram(),
+                municipalityDTO.site(),
                 OnlyDigitsUtils.normalize(url)
         );
 
-        String img = upload(bucketName, municipalityRequestDTO.img());
-        municipality.setImg(img);
-
-        municipalityRequestDTO.highlights()
+        municipalityDTO.new_highlights()
                 .forEach(multipartFile -> {
                     try {
                         String highlight = upload(bucketName, multipartFile);
@@ -126,13 +116,17 @@ public class MunicipalityService {
                 });
 
         MunicipalityDomain save = municipalityRepository.save(municipality);
-        return new ResponseDTO<MunicipalityCustomDTO>(MunicipalityMapper.toDTO(save));
+        return new ResponseDTO<MunicipalityDTO>(MunicipalityMapper.toDTO(save));
     }
 
     private void validation(String phone, List<MultipartFile> files) {
         if (!ValidationValueUtils.isValidAnyPhone(phone)) {
             logger.info("Phone is invalid with value: {}", phone);
             throw new PhoneInvalidException("Telefone inválido.");
+        }
+
+        if(files == null || files.isEmpty()) {
+           return;
         }
 
         if(!ValidationValueUtils.isLengthValid(files, MAX_SIZE)) {

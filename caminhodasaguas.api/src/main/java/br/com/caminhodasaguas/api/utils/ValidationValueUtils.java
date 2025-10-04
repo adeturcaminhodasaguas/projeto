@@ -13,6 +13,10 @@ public class ValidationValueUtils {
     private static final Pattern DOCUMENT_PATTERN = Pattern.compile(RegexUtils.DOCUMENT_REGEX);
     private static final Pattern ANY_PHONE_PATTERN = Pattern.compile(RegexUtils.ANY_PHONE_REGEX);
 
+    public static boolean isInteger(Integer integer) {
+        return integer != null && integer.compareTo(0) > 0;
+    }
+
     public static boolean isValidEmail(String email) {
         return EMAIL_PATTERN.matcher(email).matches();
     }

@@ -1,21 +1,12 @@
 package br.com.caminhodasaguas.api.domains;
 
-import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "banners")
-public class BannerDomain {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class BannerDomain extends BaseDomain {
 
     @Column(nullable = false)
     private String img;
@@ -44,14 +35,6 @@ public class BannerDomain {
         bannerDomain.setLink(link);
         bannerDomain.setAltText(altText);
         return bannerDomain;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getImg() {

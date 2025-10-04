@@ -19,9 +19,6 @@ public class MunicipalityDomain extends BaseDomain {
     private String description;
 
     @Column(nullable = false)
-    private String img;
-
-    @Column(nullable = false)
     private String phone;
 
     private String instagram;
@@ -94,14 +91,6 @@ public class MunicipalityDomain extends BaseDomain {
 
     public void setHighlights(List<ItemDomainMunicipality> highlights) {
         this.highlights = highlights;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
     }
 
     public String getDescription() {

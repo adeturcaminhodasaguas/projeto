@@ -139,12 +139,57 @@ public class HandlerException {
                 new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
     }
 
+    @ExceptionHandler(FlavorsCultureAlreadyRegisteredException.class)
+    public ResponseEntity<ExceptionDTO<String>> FlavorsCultureAlreadyRegisteredException(Exception ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(
+                new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
+    }
+
+    @ExceptionHandler(FlavorsCultureNotFoundException.class)
+    public ResponseEntity<ExceptionDTO<String>> FlavorsCultureNotFoundException(Exception ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(
+                new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
+    }
+
+    @ExceptionHandler(IntegerInvalidException.class)
+    public ResponseEntity<ExceptionDTO<String>> IntegerInvalidException(Exception ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(
+                new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
+    }
+
+
+        @ExceptionHandler(TestimonialsNotFoundException.class)
+    public ResponseEntity<ExceptionDTO<String>> TestimonialsNotFoundException(Exception ex) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(
+                new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
+    }
+
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ExceptionDTO<String>> EventNotFoundException(Exception ex) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(
+                new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
+    }
+
+    @ExceptionHandler(EventAlreadyRegisteredException.class)
+    public ResponseEntity<ExceptionDTO<String>> EventAlreadyRegisteredException(Exception ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(
+                new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
+    }
+
     @ExceptionHandler(TokenInvalidException.class)
     public ResponseEntity<ExceptionDTO<String>> TokenInvalidException(Exception ex) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(
                 new ExceptionDTO<String>(status.value(), ex.getMessage(), OffsetDateTime.now()));
     }
+
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
