@@ -68,7 +68,9 @@ public class EventService {
                 eventEditRequestDTO.phone(),
                 eventEditRequestDTO.instagram(),
                 eventEditRequestDTO.site(),
-                url);
+                url, 
+                eventEditRequestDTO.municipio()
+                );
 
         if (eventEditRequestDTO.deleted_highlights() != null) {
             update.getHighlights().removeIf(item -> {
@@ -103,7 +105,9 @@ public class EventService {
                 eventDTO.phone(),
                 eventDTO.instagram(),
                 eventDTO.site(),
-                OnlyDigitsUtils.normalize(url));
+                OnlyDigitsUtils.normalize(url),
+                eventDTO.municipio()
+                );
 
         eventDTO.new_highlights()
                 .forEach(multipartFile -> {

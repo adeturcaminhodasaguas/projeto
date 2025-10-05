@@ -27,6 +27,8 @@ public class EventDomain extends BaseDomain {
 
     private String site;
 
+    private String municipio;
+
     @Column(nullable = false)
     private String url;
 
@@ -35,7 +37,7 @@ public class EventDomain extends BaseDomain {
 
     public EventDomain() {}
 
-    public static EventDomain draft(String name, String description, String phone, String instagram, String site, String url) {
+    public static EventDomain draft(String name, String description, String phone, String instagram, String site, String url, String municipio) {
         EventDomain event = new EventDomain();
         event.setName(name);
         event.setDescription(description);
@@ -43,16 +45,18 @@ public class EventDomain extends BaseDomain {
         event.setInstagram(instagram);
         event.setSite(site);
         event.setUrl(url);
+        event.setMunicipio(municipio);
         return event;
     }
 
-    public static EventDomain edit(EventDomain eventDomain, String name, String description, String phone, String instagram, String site, String url){
+    public static EventDomain edit(EventDomain eventDomain, String name, String description, String phone, String instagram, String site, String url, String municipio) {
         eventDomain.setName(name);
         eventDomain.setDescription(description);
         eventDomain.setPhone(phone);
         eventDomain.setInstagram(instagram);
         eventDomain.setSite(site);
         eventDomain.setUrl(url);
+        eventDomain.setMunicipio(municipio);
         return  eventDomain;
     }
 
@@ -124,5 +128,13 @@ public class EventDomain extends BaseDomain {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(String municipio) {
+        this.municipio = municipio;
     }
 }
