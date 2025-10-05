@@ -68,7 +68,8 @@ public class FlavorsCultureService {
                 flavorsCultureEditRequestDTO.phone(),
                 flavorsCultureEditRequestDTO.instagram(),
                 flavorsCultureEditRequestDTO.site(),
-                url
+                url,
+                flavorsCultureEditRequestDTO.municipality()
         );
 
         if(flavorsCultureEditRequestDTO.deleted_highlights() != null) {
@@ -103,7 +104,8 @@ public class FlavorsCultureService {
                 flavorsCultureDTO.phone(),
                 flavorsCultureDTO.instagram(),
                 flavorsCultureDTO.site(),
-                OnlyDigitsUtils.normalize(url)
+                OnlyDigitsUtils.normalize(url),
+                flavorsCultureDTO.municipality()
         );
 
         flavorsCultureDTO.new_highlights()

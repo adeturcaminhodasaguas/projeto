@@ -27,6 +27,8 @@ public class FlavorsCultureDomain extends BaseDomain {
 
     private String site;
 
+    private String municipality;
+
     @Column(nullable = false)
     private String url;
 
@@ -35,7 +37,7 @@ public class FlavorsCultureDomain extends BaseDomain {
 
     public FlavorsCultureDomain() {}
 
-    public static FlavorsCultureDomain draft(String name, String description, String phone, String instagram, String site, String url) {
+    public static FlavorsCultureDomain draft(String name, String description, String phone, String instagram, String site, String url, String municipality) {
         FlavorsCultureDomain flavors = new FlavorsCultureDomain();
         flavors.setName(name);
         flavors.setDescription(description);
@@ -43,16 +45,18 @@ public class FlavorsCultureDomain extends BaseDomain {
         flavors.setInstagram(instagram);
         flavors.setSite(site);
         flavors.setUrl(url);
+        flavors.setMunicipality(municipality);
         return flavors;
     }
 
-    public static FlavorsCultureDomain edit(FlavorsCultureDomain flavorsCultureDomain, String name, String description, String phone, String instagram, String site, String url){
+    public static FlavorsCultureDomain edit(FlavorsCultureDomain flavorsCultureDomain, String name, String description, String phone, String instagram, String site, String url, String municipality){
         flavorsCultureDomain.setName(name);
         flavorsCultureDomain.setDescription(description);
         flavorsCultureDomain.setPhone(phone);
         flavorsCultureDomain.setInstagram(instagram);
         flavorsCultureDomain.setSite(site);
         flavorsCultureDomain.setUrl(url);
+        flavorsCultureDomain.setMunicipality(municipality);
         return  flavorsCultureDomain;
     }
 
@@ -124,5 +128,13 @@ public class FlavorsCultureDomain extends BaseDomain {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public String getMunicipality() {
+        return municipality;
+    }
+
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
     }
 }

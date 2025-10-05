@@ -17,7 +17,7 @@ public class EventMapper {
                 eventDomain.getInstagram(),
                 eventDomain.getSite(),
                 ItemEventMapper.toDtoList(eventDomain.getHighlights()),
-                eventDomain.getMunicipio(),
+                eventDomain.getMunicipality(),
                 null,
                 null);
     }

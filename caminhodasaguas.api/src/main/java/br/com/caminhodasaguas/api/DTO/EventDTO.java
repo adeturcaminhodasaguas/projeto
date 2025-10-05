@@ -28,7 +28,7 @@ public record EventDTO(
 
         List<ItemCustomDTO> highlights,
 
-        String municipio,
+        String municipality,
 
         @JsonProperty(access = Access.WRITE_ONLY)
         List<MultipartFile> new_highlights,

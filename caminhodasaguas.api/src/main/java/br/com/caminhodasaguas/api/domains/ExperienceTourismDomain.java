@@ -27,6 +27,8 @@ public class ExperienceTourismDomain extends BaseDomain {
 
     private String site;
 
+    private String municipality;
+
     @Column(nullable = false)
     private String url;
 
@@ -36,7 +38,7 @@ public class ExperienceTourismDomain extends BaseDomain {
     public ExperienceTourismDomain() {
     }
 
-    public static ExperienceTourismDomain draft(String name, String description, String phone, String instagram, String site, String url) {
+    public static ExperienceTourismDomain draft(String name, String description, String phone, String instagram, String site, String url, String municipality) {
         ExperienceTourismDomain experience = new ExperienceTourismDomain();
         experience.setName(name);
         experience.setDescription(description);
@@ -44,16 +46,18 @@ public class ExperienceTourismDomain extends BaseDomain {
         experience.setInstagram(instagram);
         experience.setSite(site);
         experience.setUrl(url);
+        experience.setMunicipality(municipality);
         return experience;
     }
 
-    public static ExperienceTourismDomain edit(ExperienceTourismDomain experienceTourism, String name, String description, String phone, String instagram, String site, String url){
+    public static ExperienceTourismDomain edit(ExperienceTourismDomain experienceTourism, String name, String description, String phone, String instagram, String site, String url, String municipality){
         experienceTourism.setName(name);
         experienceTourism.setDescription(description);
         experienceTourism.setPhone(phone);
         experienceTourism.setInstagram(instagram);
         experienceTourism.setSite(site);
         experienceTourism.setUrl(url);
+        experienceTourism.setMunicipality(municipality);
         return experienceTourism;
     }
 
@@ -125,5 +129,13 @@ public class ExperienceTourismDomain extends BaseDomain {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public String getMunicipality() {
+        return municipality;
+    }
+
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
     }
 }

@@ -16,6 +16,7 @@ public class FlavorsCultureMapper {
                 flavorsCultureDomain.getInstagram(),
                 flavorsCultureDomain.getSite(),
                 ItemFlavorsCultureMapper.toDtoList(flavorsCultureDomain.getHighlights()),
+                flavorsCultureDomain.getMunicipality(),
                 null,
                 null
         );

@@ -27,6 +27,8 @@ public record ExperienceTourismDTO(
 
         List<ItemCustomDTO> highlights,
 
+        String municipality,
+
         @JsonProperty(access = Access.WRITE_ONLY) List<MultipartFile> new_highlights,
 
         @JsonProperty(access = Access.WRITE_ONLY) List<UUID> deleted_highlights

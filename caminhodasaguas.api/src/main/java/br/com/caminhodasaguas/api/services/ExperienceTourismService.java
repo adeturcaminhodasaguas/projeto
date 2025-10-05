@@ -71,7 +71,9 @@ public class ExperienceTourismService {
                 experienceTourismEditRequestDTO.phone(),
                 experienceTourismEditRequestDTO.instagram(),
                 experienceTourismEditRequestDTO.site(),
-                url);
+                url, 
+                experienceTourismEditRequestDTO.municipality()
+                );
 
 
           if(experienceTourismEditRequestDTO.deleted_highlights() != null) {
@@ -107,7 +109,9 @@ public class ExperienceTourismService {
                 experienceTourismRequestDTO.phone(),
                 experienceTourismRequestDTO.instagram(),
                 experienceTourismRequestDTO.site(),
-                url);
+                url,
+                experienceTourismRequestDTO.municipality()
+                );
 
         experienceTourismRequestDTO.new_highlights()
                 .forEach(multipartFile -> {

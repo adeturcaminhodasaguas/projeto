@@ -69,7 +69,7 @@ public class EventService {
                 eventEditRequestDTO.instagram(),
                 eventEditRequestDTO.site(),
                 url, 
-                eventEditRequestDTO.municipio()
+                eventEditRequestDTO.municipality()
                 );
 
         if (eventEditRequestDTO.deleted_highlights() != null) {
@@ -106,7 +106,7 @@ public class EventService {
                 eventDTO.instagram(),
                 eventDTO.site(),
                 OnlyDigitsUtils.normalize(url),
-                eventDTO.municipio()
+                eventDTO.municipality()
                 );
 
         eventDTO.new_highlights()

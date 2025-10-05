@@ -17,6 +17,7 @@ public class ExperienceTourismMapper {
                 experienceTourismDomain.getInstagram(),
                 experienceTourismDomain.getSite(),
                 ItemExperienceTourismMapper.toDtoList(experienceTourismDomain.getHighlights()),
+                experienceTourismDomain.getMunicipality(),
                 null,
                 null
         );

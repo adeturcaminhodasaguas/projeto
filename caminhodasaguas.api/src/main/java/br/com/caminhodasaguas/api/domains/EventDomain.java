@@ -27,7 +27,7 @@ public class EventDomain extends BaseDomain {
 
     private String site;
 
-    private String municipio;
+    private String municipality;
 
     @Column(nullable = false)
     private String url;
@@ -37,7 +37,7 @@ public class EventDomain extends BaseDomain {
 
     public EventDomain() {}
 
-    public static EventDomain draft(String name, String description, String phone, String instagram, String site, String url, String municipio) {
+    public static EventDomain draft(String name, String description, String phone, String instagram, String site, String url, String municipality) {
         EventDomain event = new EventDomain();
         event.setName(name);
         event.setDescription(description);
@@ -45,18 +45,18 @@ public class EventDomain extends BaseDomain {
         event.setInstagram(instagram);
         event.setSite(site);
         event.setUrl(url);
-        event.setMunicipio(municipio);
+        event.setMunicipality(municipality);
         return event;
     }
 
-    public static EventDomain edit(EventDomain eventDomain, String name, String description, String phone, String instagram, String site, String url, String municipio) {
+    public static EventDomain edit(EventDomain eventDomain, String name, String description, String phone, String instagram, String site, String url, String municipality) {
         eventDomain.setName(name);
         eventDomain.setDescription(description);
         eventDomain.setPhone(phone);
         eventDomain.setInstagram(instagram);
         eventDomain.setSite(site);
         eventDomain.setUrl(url);
-        eventDomain.setMunicipio(municipio);
+        eventDomain.setMunicipality(municipality);
         return  eventDomain;
     }
 
@@ -130,11 +130,11 @@ public class EventDomain extends BaseDomain {
         this.site = site;
     }
 
-    public String getMunicipio() {
-        return municipio;
+    public String getMunicipality() {
+        return municipality;
     }
 
-    public void setMunicipio(String municipio) {
-        this.municipio = municipio;
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
     }
 }
