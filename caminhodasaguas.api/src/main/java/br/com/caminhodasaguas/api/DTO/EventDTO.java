@@ -1,5 +1,6 @@
 package br.com.caminhodasaguas.api.DTO;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,12 @@ public record EventDTO(
         List<ItemCustomDTO> highlights,
 
         String municipality,
+
+        String startTime,
+        String endTime,
+        String location,
+        String date,
+        Boolean highlight,
 
         @JsonProperty(access = Access.WRITE_ONLY)
         List<MultipartFile> new_highlights,

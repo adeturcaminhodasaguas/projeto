@@ -1,10 +1,13 @@
 package br.com.caminhodasaguas.api.controllers;
 
 import br.com.caminhodasaguas.api.DTO.MunicipalityDTO;
+import br.com.caminhodasaguas.api.DTO.PageResponseDTO;
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
 import br.com.caminhodasaguas.api.services.MunicipalityService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,5 +52,11 @@ public class MunicipalityController {
     public ResponseEntity<ResponseDTO<MunicipalityDTO>> findById(@PathVariable("id") UUID id){
         ResponseDTO<MunicipalityDTO> municipality = municipalityService.findById(id);
         return ResponseEntity.ok(municipality);
+    }
+
+    @GetMapping("/web")
+    public ResponseEntity<PageResponseDTO<MunicipalityDTO>> findAllWeb(Pageable pageable){
+        PageResponseDTO<MunicipalityDTO> municipalities = municipalityService.findAllWeb(pageable);
+        return ResponseEntity.ok(municipalities);
     }
 }

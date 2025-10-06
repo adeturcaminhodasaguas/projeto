@@ -1,6 +1,7 @@
 package br.com.caminhodasaguas.api.services;
 
 import br.com.caminhodasaguas.api.DTO.MunicipalityDTO;
+import br.com.caminhodasaguas.api.DTO.PageResponseDTO;
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
 import br.com.caminhodasaguas.api.configs.exceptions.MaxSizeInvalidException;
 import br.com.caminhodasaguas.api.configs.exceptions.MunicipalityAlreadyRegisteredException;
@@ -16,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +41,19 @@ public class MunicipalityService {
 
     @Value("${spring.image.max-size}")
     private Integer MAX_SIZE;
+
+    public PageResponseDTO<MunicipalityDTO> findAllWeb(Pageable pageable){
+        Page<MunicipalityDomain> domains = municipalityRepository.findAll(pageable);
+        List<MunicipalityDTO> dtos = MunicipalityMapper.toDTOList(domains.getContent());
+        return new PageResponseDTO<MunicipalityDTO>(
+                dtos,
+                domains.getNumber(),
+                domains.getSize(),
+                domains.getTotalElements(),
+                domains.getTotalPages(),
+                domains.isLast()
+        );
+    }
 
     public ResponseDTO<List<MunicipalityDTO>> findAll() {
         List<MunicipalityDomain> domains = municipalityRepository.findAll();

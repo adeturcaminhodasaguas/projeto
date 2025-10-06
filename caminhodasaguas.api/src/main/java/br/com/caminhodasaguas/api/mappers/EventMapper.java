@@ -18,6 +18,11 @@ public class EventMapper {
                 eventDomain.getSite(),
                 ItemEventMapper.toDtoList(eventDomain.getHighlights()),
                 eventDomain.getMunicipality(),
+                eventDomain.getStartTime(),
+                eventDomain.getEndTime(),
+                eventDomain.getLocation(),
+                eventDomain.getDate(),
+                eventDomain.getHighlight(),
                 null,
                 null);
     }

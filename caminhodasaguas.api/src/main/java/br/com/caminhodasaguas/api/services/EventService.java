@@ -69,8 +69,13 @@ public class EventService {
                 eventEditRequestDTO.instagram(),
                 eventEditRequestDTO.site(),
                 url, 
-                eventEditRequestDTO.municipality()
-                );
+                eventEditRequestDTO.municipality(),
+                eventEditRequestDTO.location(),
+                eventEditRequestDTO.date(),
+                eventEditRequestDTO.startTime(),
+                eventEditRequestDTO.endTime(),
+                eventEditRequestDTO.highlight()
+        );
 
         if (eventEditRequestDTO.deleted_highlights() != null) {
             update.getHighlights().removeIf(item -> {
@@ -106,8 +111,13 @@ public class EventService {
                 eventDTO.instagram(),
                 eventDTO.site(),
                 OnlyDigitsUtils.normalize(url),
-                eventDTO.municipality()
-                );
+                eventDTO.municipality(),
+                eventDTO.location(),
+                eventDTO.date(),
+                eventDTO.startTime(),
+                eventDTO.endTime(),
+                eventDTO.highlight()
+        );
 
         eventDTO.new_highlights()
                 .forEach(multipartFile -> {
