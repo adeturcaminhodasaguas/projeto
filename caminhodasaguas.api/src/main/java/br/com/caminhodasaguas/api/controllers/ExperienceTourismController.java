@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.MediaType;
 
 import br.com.caminhodasaguas.api.DTO.ExperienceTourismDTO;
+import br.com.caminhodasaguas.api.DTO.PageResponseDTO;
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
 import br.com.caminhodasaguas.api.services.ExperienceTourismService;
 
@@ -61,5 +63,11 @@ public class ExperienceTourismController {
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         experienceTourismService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/web")
+    public ResponseEntity<PageResponseDTO<ExperienceTourismDTO>> findAllWeb(Pageable pageable){
+        PageResponseDTO<ExperienceTourismDTO> experiences = experienceTourismService.findAllWeb(pageable);
+        return ResponseEntity.ok(experiences);
     }
 }

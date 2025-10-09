@@ -8,10 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.caminhodasaguas.api.DTO.ExperienceTourismDTO;
+import br.com.caminhodasaguas.api.DTO.PageResponseDTO;
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
 import br.com.caminhodasaguas.api.configs.exceptions.ExperienceTourismAlreadyRegisteredException;
 import br.com.caminhodasaguas.api.configs.exceptions.ExperienceTourismNotFoundException;
@@ -42,6 +45,18 @@ public class ExperienceTourismService {
     @Value("${spring.image.max-size}")
     private Integer MAX_SIZE;
 
+    public PageResponseDTO<ExperienceTourismDTO> findAllWeb(Pageable pageable) {
+        Page<ExperienceTourismDomain> domains = experienceTourismRepository.findAll(pageable);
+        List<ExperienceTourismDTO> dtos = ExperienceTourismMapper.toDTOList(domains.getContent());
+        return new PageResponseDTO<ExperienceTourismDTO>(
+                dtos,
+                domains.getNumber(),
+                domains.getSize(),
+                domains.getTotalElements(),
+                domains.getTotalPages(),
+                domains.isLast());
+    }
+
     public ResponseDTO<List<ExperienceTourismDTO>> findAll() {
         List<ExperienceTourismDomain> domains = experienceTourismRepository.findAll();
         return new ResponseDTO<List<ExperienceTourismDTO>>(ExperienceTourismMapper.toDTOList(domains));
@@ -71,15 +86,14 @@ public class ExperienceTourismService {
                 experienceTourismEditRequestDTO.phone(),
                 experienceTourismEditRequestDTO.instagram(),
                 experienceTourismEditRequestDTO.site(),
-                url, 
-                experienceTourismEditRequestDTO.municipality()
-                );
+                url,
+                experienceTourismEditRequestDTO.municipality());
 
-
-          if(experienceTourismEditRequestDTO.deleted_highlights() != null) {
+        if (experienceTourismEditRequestDTO.deleted_highlights() != null) {
             update.getHighlights().removeIf(item -> {
                 boolean match = experienceTourismEditRequestDTO.deleted_highlights().contains(item.getId());
-                if (match) item.setExperienceTourismDomain(null);
+                if (match)
+                    item.setExperienceTourismDomain(null);
                 return match;
             });
         }
@@ -110,8 +124,7 @@ public class ExperienceTourismService {
                 experienceTourismRequestDTO.instagram(),
                 experienceTourismRequestDTO.site(),
                 url,
-                experienceTourismRequestDTO.municipality()
-                );
+                experienceTourismRequestDTO.municipality());
 
         experienceTourismRequestDTO.new_highlights()
                 .forEach(multipartFile -> {
