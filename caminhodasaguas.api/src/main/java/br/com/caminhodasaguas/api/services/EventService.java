@@ -1,6 +1,7 @@
 package br.com.caminhodasaguas.api.services;
 
 import br.com.caminhodasaguas.api.DTO.EventDTO;
+import br.com.caminhodasaguas.api.DTO.PageResponseDTO;
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
 import br.com.caminhodasaguas.api.configs.exceptions.EventAlreadyRegisteredException;
 import br.com.caminhodasaguas.api.configs.exceptions.EventNotFoundException;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
 import java.util.*;
@@ -39,6 +42,18 @@ public class EventService {
 
     @Value("${spring.image.max-size}")
     private Integer MAX_SIZE;
+
+    public PageResponseDTO<EventDTO> findAllWeb(Pageable pageable) {
+        Page<EventDomain> page = eventRepository.findAll(pageable);
+        List<EventDTO> dtoList = EventMapper.toDTOList(page.getContent());
+        return new PageResponseDTO<EventDTO>(
+                dtoList,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isLast());
+    }
 
     public ResponseDTO<List<EventDTO>> findAll() {
         List<EventDomain> domains = eventRepository.findAll();
@@ -68,14 +83,13 @@ public class EventService {
                 eventEditRequestDTO.phone(),
                 eventEditRequestDTO.instagram(),
                 eventEditRequestDTO.site(),
-                url, 
+                url,
                 eventEditRequestDTO.municipality(),
                 eventEditRequestDTO.location(),
                 eventEditRequestDTO.date(),
                 eventEditRequestDTO.startTime(),
                 eventEditRequestDTO.endTime(),
-                eventEditRequestDTO.highlight()
-        );
+                eventEditRequestDTO.highlight());
 
         if (eventEditRequestDTO.deleted_highlights() != null) {
             update.getHighlights().removeIf(item -> {
@@ -116,8 +130,7 @@ public class EventService {
                 eventDTO.date(),
                 eventDTO.startTime(),
                 eventDTO.endTime(),
-                eventDTO.highlight()
-        );
+                eventDTO.highlight());
 
         eventDTO.new_highlights()
                 .forEach(multipartFile -> {

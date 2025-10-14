@@ -1,10 +1,12 @@
 package br.com.caminhodasaguas.api.controllers;
 
 import br.com.caminhodasaguas.api.DTO.EventDTO;
+import br.com.caminhodasaguas.api.DTO.PageResponseDTO;
 import br.com.caminhodasaguas.api.DTO.ResponseDTO;
 import br.com.caminhodasaguas.api.services.EventService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,5 +52,11 @@ public class EventController {
     public ResponseEntity<ResponseDTO<EventDTO>> findById(@PathVariable("id") UUID id) {
         ResponseDTO<EventDTO> event = eventService.findById(id);
         return ResponseEntity.ok(event);
+    }
+
+    @GetMapping("/web")
+    public ResponseEntity<PageResponseDTO<EventDTO>> findAllWeb(Pageable pageable) {
+        PageResponseDTO<EventDTO> events = eventService.findAllWeb(pageable);
+        return ResponseEntity.ok(events);
     }
 }
