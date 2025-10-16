@@ -43,6 +43,11 @@ public class EventService {
     @Value("${spring.image.max-size}")
     private Integer MAX_SIZE;
 
+    public ResponseDTO<List<EventDTO>> findByHighlightTrue() {
+        List<EventDomain> domains = eventRepository.findTop3ByHighlightTrue();
+        return new ResponseDTO<List<EventDTO>>(EventMapper.toDTOList(domains));
+    }
+
     public PageResponseDTO<EventDTO> findAllWeb(Pageable pageable) {
         Page<EventDomain> page = eventRepository.findAll(pageable);
         List<EventDTO> dtoList = EventMapper.toDTOList(page.getContent());

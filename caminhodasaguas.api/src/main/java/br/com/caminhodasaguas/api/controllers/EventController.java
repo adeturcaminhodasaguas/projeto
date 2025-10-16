@@ -59,4 +59,10 @@ public class EventController {
         PageResponseDTO<EventDTO> events = eventService.findAllWeb(pageable);
         return ResponseEntity.ok(events);
     }
+
+    @GetMapping("/web/highlights")
+    public ResponseEntity<ResponseDTO<List<EventDTO>>> findByHighlightTrue() {
+        ResponseDTO<List<EventDTO>> events = eventService.findByHighlightTrue();
+        return ResponseEntity.ok(events);
+    }
 }
